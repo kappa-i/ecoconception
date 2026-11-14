@@ -8,6 +8,11 @@ HEIG-VD · Ingénierie des Médias · Stéphane Lecorney
 
 ![Site](https://img.shields.io/badge/site-myswitzerland.com-e30613)
 ![Objectif](https://img.shields.io/badge/objectif-%C3%A9co--score%20A-2e7d32)
+![Stack](https://img.shields.io/badge/stack-Next.js-000000)
+
+**Équipe :** Cindy · Léa · Gab
+
+📋 [FigJam du projet](https://www.figma.com/board/NkXLpSkvFgUfcKtHzAuUvz/%C3%89coconception) · 💡 [Concept](CONCEPT.md) · 🎨 [Design](DESIGN.md)
 
 </div>
 
@@ -23,9 +28,11 @@ Ce qu'on doit faire :
 
 - 🧭 Concevoir l'UX et optimiser les parcours utilisateurs
 - 🎨 Créer le design
-- 📋 Appliquer un référentiel d'écoconception
+- 📋 Appliquer un référentiel d'écoconception ([RGESN](https://ecoresponsable.numerique.gouv.fr/publications/referentiel-general-ecoconception/))
 - 💻 Implémenter une partie du site : les pages les plus pertinentes
 - ⚙️ Utiliser un framework de développement adapté
+
+---
 
 ## 📦 Livrables
 
@@ -40,10 +47,11 @@ Ce qu'on doit faire :
 
 | Quand | Quoi |
 |---|---|
-| **12 octobre** | Conversation Teams créée (équipe + prof), choix du projet avec description et objectifs (~1 page) |
-| Jour 2 | Présentation du projet défini et du planning |
-| Jour 3 | Point d'avancement : problèmes rencontrés, prochaines étapes |
-| **Jour 4** | **Présentation finale : 15 min par groupe + 10 min de questions** |
+| ~~23.09~~ | Cours 1 : inspection du site, choix du projet |
+| ~~12.10~~ | Choix du projet envoyé sur Teams |
+| ~~28.10~~ | Cours 2 : personas, concept, retour du prof |
+| Cours 3 | Point d'avancement : problèmes rencontrés, prochaines étapes |
+| **Cours 4** | **Présentation finale : 15 min par groupe + 10 min de questions** |
 
 ## 📊 Évaluation
 
@@ -55,14 +63,17 @@ Ce qu'on doit faire :
 
 La note de groupe est pondérée selon l'évaluation par les pairs.
 
-## 🔬 Outils de mesure
+## 🔬 Outils et références
 
-- [EcoIndex](https://www.ecoindex.fr) et [EcoIndex App](https://github.com/cnumr/EcoindexApp/releases) : tests en local sans limite, Lighthouse et analyse de parcours
-- [Website Carbon](https://www.websitecarbon.com) · [Ecograder](https://ecograder.com) · [Beacon](https://digitalbeacon.co) · Kastor · Sitigreen
+- [EcoIndex](https://www.ecoindex.fr) et [EcoIndex App](https://github.com/cnumr/EcoindexApp/releases) : tests en local, Lighthouse, analyse de parcours
+- [Website Carbon](https://www.websitecarbon.com) · [PageSpeed Insights](https://pagespeed.web.dev)
+- [RGESN, le référentiel général d'écoconception](https://ecoresponsable.numerique.gouv.fr/publications/referentiel-general-ecoconception/)
+- [Sustainable Web Design](https://sustainablewebdesign.org)
+- [Next.js — Images](https://nextjs.org/docs/app/getting-started/images) · [Static Site Generation](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation)
 
-⚠️ Ces outils n'analysent qu'**une seule page** et souvent **uniquement le CO₂ côté client**. EcoIndex n'est pas fiable avec la vidéo. Il faut donc raisonner en **parcours utilisateur**.
+⚠️ Les outils n'analysent qu'**une seule page**, et souvent seulement le **CO₂ côté client**. Il faut raisonner en **parcours utilisateur**.
 
-## 🏆 Résultats des éditions précédentes
+## 🏆 Éditions précédentes
 
 | Année | Site | Éco-score |
 |---|---|---|
