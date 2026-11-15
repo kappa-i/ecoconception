@@ -8,11 +8,11 @@ HEIG-VD · Ingénierie des Médias · Stéphane Lecorney
 
 ![Site](https://img.shields.io/badge/site-myswitzerland.com-e30613)
 ![Objectif](https://img.shields.io/badge/objectif-%C3%A9co--score%20A-2e7d32)
-![Stack](https://img.shields.io/badge/stack-Next.js-000000)
+![Stack](https://img.shields.io/badge/stack-Nuxt-00DC82)
 
 **Équipe :** Cindy · Léa · Gab
 
-📋 [FigJam du projet](https://www.figma.com/board/NkXLpSkvFgUfcKtHzAuUvz/%C3%89coconception) · 💡 [Concept](CONCEPT.md) · 🎨 [Design](DESIGN.md)
+📋 [FigJam du projet](https://www.figma.com/board/NkXLpSkvFgUfcKtHzAuUvz/%C3%89coconception) · 🖌️ [Maquettes Figma](https://www.figma.com/design/gb6WVkatyGXDzLrQVkjZWG) · 💡 [Concept](CONCEPT.md) · 🎨 [Design](DESIGN.md)
 
 </div>
 
@@ -69,7 +69,7 @@ La note de groupe est pondérée selon l'évaluation par les pairs.
 - [Website Carbon](https://www.websitecarbon.com) · [PageSpeed Insights](https://pagespeed.web.dev)
 - [RGESN, le référentiel général d'écoconception](https://ecoresponsable.numerique.gouv.fr/publications/referentiel-general-ecoconception/)
 - [Sustainable Web Design](https://sustainablewebdesign.org)
-- [Next.js — Images](https://nextjs.org/docs/app/getting-started/images) · [Static Site Generation](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation)
+- [Nuxt Image](https://image.nuxt.com/) · [Nuxt — modes de rendu (SSG, hybride)](https://nuxt.com/docs/4.x/guide/concepts/rendering)
 
 ⚠️ Les outils n'analysent qu'**une seule page**, et souvent seulement le **CO₂ côté client**. Il faut raisonner en **parcours utilisateur**.
 
