@@ -11,7 +11,7 @@ Tout le site est construit autour d'un seul objectif : **amener l'utilisateur à
 ## 🧭 Parcours
 
 ```
-Écran d'accueil  ──▶  Pop-up questionnaire  ──▶  Résultats  ──▶  Page activité
+Écran d'accueil  ──▶  Pop-up questionnaire (6 ou 7 étapes)  ──▶  Résultats (± hébergement)  ──▶  Page activité
 ```
 
 ### 1. Écran d'accueil
@@ -27,11 +27,25 @@ C'est **la grande idée du projet**, inspirée de [Naboo](https://www.naboo.app/
 
 | # | Question | Réponses |
 |---|---|---|
-| 1 | **Lieu** | Région, canton, ou lieu de départ |
-| 2 | **Durée** | Une journée · 1 à 3 nuits · 4 nuits et plus, flexible ou non |
-| 3 | **Tarif** | Fourchette de budget |
-| 4 | **Type de voyage** | Seul·e, en couple, entre amis, en famille… |
-| 5 | **Type d'activité** *(optionnel)* | Nature · Sport · Culture · Gastronomie · Bien-être · Événements |
+| 1 | **Lieu de départ** | Ville ou gare (ou *Utiliser ma position*) |
+| 2 | **Destination** | Un ou plusieurs cantons sur la **carte SVG**, ou *Peu importe, surprenez-moi* |
+| 3 | **Durée** | Une journée · 1 à 3 nuits · 4 nuits et plus |
+| 4 | **Hébergement** *(seulement si des nuits sont prévues)* | Oui, proposez-moi des hôtels · Non, j'ai déjà où dormir |
+| 5 | **Budget** | Petit · Moyen · Confort |
+| 6 | **Avec qui** | Seul·e · En couple · Entre amis · En famille |
+| 7 | **Envies** *(facultatif)* | Nature · Sport · Culture · Gastronomie · Bien-être · Événements |
+
+#### 🗺️ Destination : la carte des cantons dans le questionnaire
+
+Avec le lieu de départ seul, on proposait des activités sans savoir **où** la personne veut aller. On ajoute donc une étape avec la carte SVG des cantons : on clique sur un ou plusieurs cantons, ou on choisit *Peu importe*. Les activités **et les hôtels** proposés sont alors dans la bonne région, ce qui fait d'autant plus sens quand on a demandé un hébergement. La carte pèse ≈16 Ko compressée, contre une carte 3D interactive sur le site actuel.
+
+#### 🏨 Hébergement : une question conditionnelle, aussi pour l'écoconception
+
+- **Si « Une journée »** : la question n'est pas posée, puisqu'il n'y a pas de nuit, donc pas d'hôtel.
+- **Si « Non »** : les résultats n'affichent aucune offre d'hébergement. On n'appelle **aucune API de réservation** et on ne charge **aucun widget tiers** : pas de moteur de réservation, pas de disponibilités ni de prix en temps réel. Ces scripts sont parmi les plus lourds d'un site touristique.
+- **Si « Oui »** : une section *Où dormir* apparaît dans les résultats, avec quelques hôtels **proches des activités et de la gare**. Ils ne sont chargés qu'à ce moment-là, et on renvoie vers le **site de l'hôtel**, pas vers une plateforme de réservation.
+
+Le site actuel pousse vers les hôtels même quand on veut juste une journée. C'est un pain point de notre persona Lucie.
 
 **Côté interface :**
 
@@ -132,7 +146,7 @@ Le détail d'une activité et les infos pratiques : accès en transports publics
 - [ ] Maquettes mobile
 - [ ] Contenu par page, avec la justification de chaque choix · 🟠 medium
 - [ ] Carte SVG et code
-- [ ] Architecture du code (Next.js)
+- [ ] Architecture du code (Nuxt)
 - [ ] Rapport
 
-> Les maquettes servent à coder, pas besoin de prototype cliquable : le rendu interactif se fera directement en Next.js.
+> Les maquettes servent à coder, pas besoin de prototype cliquable : le rendu interactif se fera directement en Nuxt.
