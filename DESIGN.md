@@ -6,11 +6,11 @@
 
 | Usage | Police | Note |
 |---|---|---|
-| **Titres** | [Venus+](https://facetypes.xyz/venus/), dans l'esprit de *Carrare* | Libre, grotesque expressive |
+| **Titres** | [Venus+ Carrare](https://facetypes.xyz/venus/) | Libre, grotesque expressive |
 | **Textes** | **Frutiger** | La typo signalétique suisse, très lisible |
 
 > ⚠️ **Écoconception** : chaque webfont ajoute du poids et des requêtes.
-> - Charger **une seule graisse** de Venus+, en `woff2`, **subsetée** aux caractères latins et en `font-display: swap`.
+> - Charger **une seule graisse** de Venus+ Carrare (*Regular*), en `woff2`, **subsetée** aux caractères latins et en `font-display: swap`.
 > - Frutiger est sous licence payante. On peut la remplacer par une pile de polices système proche (`"Frutiger", "Segoe UI", "Helvetica Neue", Arial, sans-serif`), ce qui donne **0 Ko** à charger pour le texte courant.
 
 ## Style visuel
@@ -56,18 +56,22 @@ Couleurs tirées du FigJam : la palette *Switzerland color code*, plus les palet
 | `green/fir` | `#4C6022` | Switzerland color code |
 | `neutral/powder` | `#F0F4F7` | Powder White |
 | `neutral/tundra` | `#EFEBEA` | Tundra |
+| `neutral/white` | `#FFFFFF` | *ajout : fond* |
 | `neutral/stone` | `#D5D9DE` | *ajout : bordures* |
+| `neutral/rule` | `#E3E6EA` | *ajout : filets* |
+| `neutral/grey-300` | `#BDC2CA` | *ajout : options non choisies* |
+| `neutral/grey-500` | `#9AA0A9` | *ajout : texte méta* |
 | `neutral/ink` | `#1C1F23` | *ajout : texte* |
 
 **Rôles principaux** (variables sémantiques dans Figma) :
 
-- **Fond** : `powder`.
-- **Surfaces** : `white`.
-- **Texte** : `ink` pour le texte principal, `summit` pour le secondaire.
-- **Action principale** : `red/swiss`, qui passe à `red/flag` au survol.
-- **Catégories d'activités** (rubans, tags) : `fir` / `meadow` pour la nature, `sky` pour les lacs, `glacier` pour la neige, `sun-valley` pour le soleil, `alps` pour la culture.
+- **Fond** : `white` par défaut, `powder` pour les sections alternées.
+- **Texte** : `ink` pour le texte principal, `summit` pour le secondaire, `grey-500` pour le méta.
+- **Hiérarchie** : `grey-300` pour les options non choisies, `ink` pour l'option choisie.
+- **Action principale** : bouton `ink`, qui passe à `red/swiss` au survol.
+- **Accents de catégorie** (texte `Meta` en *Accent*, jamais en aplat) : `fir` / `meadow` pour la nature, `sky` pour les lacs, `glacier` pour la neige, `sun-valley` pour le soleil, `alps` pour la culture.
 
-> Une palette réduite à des aplats, et un fond clair plutôt que des photos plein écran, allègent les pages et améliorent le contraste.
+> La couleur reste rare : la photo duotone et la typographie portent le design, ce qui allège les pages et garde un bon contraste.
 
 ## Design system (Figma)
 
@@ -79,7 +83,7 @@ Avancement :
   - rayons (0 → 24) ;
   - 11 styles de texte, avec la famille de police liée aux variables `font/heading` et `font/body`.
 - [x] **Composants** (page *Composants*), adaptés à la direction éditoriale :
-  - `Button` : Link (texte noir souligné, rouge au survol), Back (gris) ou Solid (aplat noir, angles droits, réservé au CTA final), avec les états Default, Hover et Disabled ;
+  - `Button` : **Primary** (bouton plein noir à angles droits, rouge au survol : Suivant, Commencer, Voir les activités), **Secondary** (bouton contour : Retour), **Link** (lien texte souligné : Voir, Modifier mes réponses…) et **Back** (lien texte gris : Fermer, Peu importe…), avec les états Default, Hover et Disabled. **Aucune flèche décorative** ;
   - `Answer` : la réponse du questionnaire en grande liste typographique, avec une colonne méta à droite. Elle est gris clair par défaut, gris moyen au survol et noire quand elle est sélectionnée ;
   - `Progress` : 7 segments fins avec le compteur « 02 / 07 — étape ». Si l'étape hébergement est sautée, le compteur passe à 6 (géré en code) ;
   - `Meta` : le petit texte d'info, en Muted, Strong ou Accent. Il remplace les tags pilules.
@@ -90,7 +94,7 @@ Avancement :
   - `Footer` : la marque, les crédits photo (obligatoires avec les licences CC), les liens et le **compteur écoconception** (poids de la page, CO₂e, score EcoIndex, nombre de requêtes). Les valeurs sont à mesurer réellement ;
   - `Field` : champ de saisie éditorial (petit label gris, valeur en grand, filet en bas), avec les états Empty, Focus et Filled ;
   - `ActivityCard` : carte d'activité avec une photo en duotone (65 à 85 Ko), un titre et deux colonnes d'infos (lieu et accès en gris, durée et prix en noir). Au survol, le titre est souligné.
-- [x] **`Questionnaire`** : le pop-up, avec 7 variantes (`Step=1…7`). À gauche une photo en duotone, une par étape, avec une légende du lieu. À droite :
+- [x] **`Questionnaire`** : le pop-up, avec 7 variantes (`Step=1…7`). À gauche, **la même photo pour toutes les étapes, identique à celle du Hero** : elle est déjà en cache, donc le questionnaire ne charge aucune image. À droite :
   - la progression et le lien *Fermer* ;
   - la question et une aide ;
   - les réponses en liste typographique (`Answer`, nouvelle taille **Medium**, 56 px) ;
@@ -109,9 +113,16 @@ Avancement :
 - [x] **`HotelRow`** et la section **« Où dormir »** des résultats. Elle n'est affichée **que si l'on a répondu « Oui » à l'hébergement**. C'est une liste texte, sans photo ni widget de réservation, avec un lien direct vers le site de l'hôtel. Aucune API de plateforme de réservation n'est appelée.
 - [x] **Rangée *Parcours*** (page *Écrans*), dans l'ordre du prototype : 01 Accueil → 02–08 Questionnaire 1/7 à 7/7 → 09 Résultats → 10 Activité.
 - [x] **Page *Écrans*** : l'*Accueil* (héros, « Explorer la Suisse » avec la carte, pied de page) et la *Page activité* (héros, texte d'intro, infos pratiques, accès en train et carte avec le canton en surbrillance, pied de page).
-- [ ] Composants suivants : KeyFigure, EventRow, FilterBar, SeasonBar, NearbyList, SearchOverlay, SaveLink, CookieNotice, Breadcrumb…
+- [x] **Résultats en vue liste** (`Parcours — 09b`, à comparer avec la grille `09`) : toutes les activités **au même niveau**, en liste typographique (`ActivityListRow`). Il n'y a pas d'activité mise en avant, pour ne pas pousser vers le premier résultat. Chaque ligne indique la région, la durée et le **prix**. **Aucune image au chargement**, la vignette n'apparaît qu'au survol. L'en-tête affiche seulement le nombre d'activités et un bouton *Modifier mes choix*. Le **train n'est mentionné que sur la page activité**.
+- [x] **Page activité enrichie** :
+  - `SeasonBar` : les 12 mois, mois ouverts en noir ;
+  - « Votre journée type » avec `TimelineRow` : horaires de train depuis le lieu de départ, et le dernier train utile ;
+  - « Infos utiles » : équipement, accessibilité, enfants, et un lien vers MétéoSuisse plutôt qu'un widget météo ;
+  - « À combiner avec » : des activités proches, en liste typographique.
+- [ ] Composants suivants : KeyFigure, EventRow, FilterBar, NearbyList, SearchOverlay, SaveLink, CookieNotice, Breadcrumb…
 
-> Polices dans Figma : **Inter** (Medium et Regular) remplace Venus+ et Frutiger, qui ne sont pas disponibles dans Figma. Pour basculer sur les vraies polices, il suffit de les installer, puis de changer la valeur des variables `font/heading` et `font/body`.
+> **Polices dans Figma**, pilotées par des variables (collection *Typography*) :
+> - `font/heading` = famille des titres (*Venus+ Carrare*) et `font/heading-weight` = *Regular* ;
+> - `font/body` = famille du texte (*Frutiger*), avec `font/body-regular`, `font/body-medium` et `font/body-strong` pour les graisses.
 >
-> Gris ajoutés pour la hiérarchie : `grey-300` `#BDC2CA` pour les options non choisies, `grey-500` `#9AA0A9` pour le texte méta, `rule` `#E3E6EA` pour les filets. Le fond par défaut est désormais **blanc**.
-    
+> Venus+ Carrare et Frutiger doivent être **installées localement** par chaque membre de l'équipe (Venus+ est gratuite sur facetypes.xyz). En attendant, *Inter* sert de police de secours.
