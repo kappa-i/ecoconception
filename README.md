@@ -10,7 +10,7 @@ HEIG-VD · Ingénierie des Médias · Stéphane Lecorney
 ![Objectif](https://img.shields.io/badge/objectif-%C3%A9co--score%20A-2e7d32)
 ![Stack](https://img.shields.io/badge/stack-Nuxt-00DC82)
 
-**Équipe :** Cindy · Léa · Gab
+**Équipe :** Cindy · Léa · Gabriel · Elia
 
 📋 [FigJam du projet](https://www.figma.com/board/NkXLpSkvFgUfcKtHzAuUvz/%C3%89coconception) · 🖌️ [Maquettes Figma](https://www.figma.com/design/gb6WVkatyGXDzLrQVkjZWG) · 💡 [Concept](CONCEPT.md) · 🎨 [Design](DESIGN.md)
 
