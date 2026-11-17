@@ -18,7 +18,7 @@ Tout le site est construit autour d'un seul objectif : **amener l'utilisateur à
 
 - **Le hero** : *« Organisez votre prochain séjour »*, avec le bouton qui ouvre le questionnaire.
 - **Une carte par zone**, en SVG léger plutôt que la carte 3D interactive du site actuel.
-- **Quelques chiffres clés** sur la Suisse.
+- **Par envie**, juste après le hero : six grandes entrées (Nature, Sport, Culture, Gastronomie, Bien-être, Événements). Chacune ouvre le questionnaire avec l'envie déjà cochée. C'est du texte seul, sans aucune image.
 - **Les prochaines manifestations**, filtrables par canton.
 
 ### 2. Pop-up questionnaire ⭐

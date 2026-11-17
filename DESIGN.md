@@ -59,19 +59,27 @@ Couleurs tirées du FigJam : la palette *Switzerland color code*, plus les palet
 | `neutral/white` | `#FFFFFF` | *ajout : fond* |
 | `neutral/stone` | `#D5D9DE` | *ajout : bordures* |
 | `neutral/rule` | `#E3E6EA` | *ajout : filets* |
-| `neutral/grey-300` | `#BDC2CA` | *ajout : options non choisies* |
-| `neutral/grey-500` | `#9AA0A9` | *ajout : texte méta* |
+| `neutral/grey-300` | `#BDC2CA` | *ajout : désactivé* |
+| `neutral/grey-400` | `#858B94` | *ajout : options non choisies, bordure des champs (3,4:1)* |
+| `neutral/grey-500` | `#9AA0A9` | *ajout : texte méta sur fond sombre (6,3:1)* |
+| `neutral/grey-600` | `#646A73` | *ajout : texte méta et secondaire (5,5:1 sur blanc, 4,6:1 sur tundra)* |
 | `neutral/ink` | `#1C1F23` | *ajout : texte* |
 
 **Rôles principaux** (variables sémantiques dans Figma) :
 
 - **Fond** : `white` par défaut, `powder` pour les sections alternées.
-- **Texte** : `ink` pour le texte principal, `summit` pour le secondaire, `grey-500` pour le méta.
-- **Hiérarchie** : `grey-300` pour les options non choisies, `ink` pour l'option choisie.
+- **Texte** : `ink` pour le texte principal, `grey-600` pour le secondaire et le méta. Sur fond sombre, le méta passe en `grey-500` (`text/meta-inverse`).
+- **Hiérarchie** : `grey-400` pour les options non choisies, `ink` pour l'option choisie.
 - **Action principale** : bouton `ink`, qui passe à `red/swiss` au survol.
 - **Accents de catégorie** (texte `Meta` en *Accent*, jamais en aplat) : `fir` / `meadow` pour la nature, `sky` pour les lacs, `glacier` pour la neige, `sun-valley` pour le soleil, `alps` pour la culture.
 
 > La couleur reste rare : la photo duotone et la typographie portent le design, ce qui allège les pages et garde un bon contraste.
+
+**Contrastes (WCAG AA)** :
+- tout le texte courant atteint **4,5:1** ;
+- les grandes réponses du questionnaire (56 px) et les bordures des champs atteignent **3:1** ;
+- les accents clairs (`sky`, `glacier`, `sun-valley`, `meadow`) ne servent jamais pour du texte ;
+- sur les photos des héros, un **dégradé ink** (35 % en haut, 60 % en bas, en CSS) garantit la lisibilité du texte blanc sans retoucher l'image.
 
 ## Design system (Figma)
 
@@ -94,7 +102,7 @@ Avancement :
   - `Footer` : la marque, les crédits photo (obligatoires avec les licences CC), les liens et le **compteur écoconception** (poids de la page, CO₂e, score EcoIndex, nombre de requêtes). Les valeurs sont à mesurer réellement ;
   - `Field` : champ de saisie éditorial (petit label gris, valeur en grand, filet en bas), avec les états Empty, Focus et Filled ;
   - `ActivityCard` : carte d'activité avec une photo en duotone (65 à 85 Ko), un titre et deux colonnes d'infos (lieu et accès en gris, durée et prix en noir). Au survol, le titre est souligné.
-- [x] **`Questionnaire`** : le pop-up, avec 7 variantes (`Step=1…7`). À gauche, **la même photo pour toutes les étapes, identique à celle du Hero** : elle est déjà en cache, donc le questionnaire ne charge aucune image. À droite :
+- [x] **`Questionnaire`** : le pop-up, avec 7 variantes (`Step=1…7`). À gauche, **une seule illustration pour toutes les étapes** : l'affiche *Alpinism Switzerland*, de style affiche de voyage. Elle pèse **≈41 Ko en WebP** et n'est chargée qu'une fois, puis reste en cache d'une étape à l'autre. Elle est calée en bas, et le ciel crème se prolonge en aplat pour qu'on voie le titre en entier. À droite :
   - la progression et le lien *Fermer* ;
   - la question et une aide ;
   - les réponses en liste typographique (`Answer`, nouvelle taille **Medium**, 56 px) ;
@@ -119,6 +127,17 @@ Avancement :
   - « Votre journée type » avec `TimelineRow` : horaires de train depuis le lieu de départ, et le dernier train utile ;
   - « Infos utiles » : équipement, accessibilité, enfants, et un lien vers MétéoSuisse plutôt qu'un widget météo ;
   - « À combiner avec » : des activités proches, en liste typographique.
+- [x] **`EnvieLink`** (Default / Hover) et la section **« Par envie »** de l'accueil, qui remplace « En chiffres ». Le mot est en très grand avec le nombre d'activités en dessous. Au survol, le mot passe en rouge et le filet en noir.
+- [x] **Rythme des sections : fonds alternés.** On a testé trois pistes : fonds alternés, phrase géante, photo pleine largeur. Les fonds alternés ont été retenus. Sur l'accueil, l'ordre est :
+  - *Par envie*, fond blanc ;
+  - *Ce week-end*, fond `bg/muted` ;
+  - *Explorer la Suisse*, fond blanc ;
+  - *Agenda*, fond `bg/inverse` (ink) avec les textes en `text/inverse` ;
+  - le pied de page, fond blanc.
+
+  Ça donne du rythme sans ajouter aucune image. La même logique est appliquée ailleurs :
+  - **Résultats** : la liste en blanc, puis *Où dormir* dans sa propre section en `bg/muted` ;
+  - **Page activité** : l'intro, les infos et la saison en blanc, puis *Votre journée type* en ink, *Infos utiles* en `bg/muted` et *À combiner avec* en blanc.
 - [ ] Composants suivants : KeyFigure, EventRow, FilterBar, NearbyList, SearchOverlay, SaveLink, CookieNotice, Breadcrumb…
 
 > **Polices dans Figma**, pilotées par des variables (collection *Typography*) :
