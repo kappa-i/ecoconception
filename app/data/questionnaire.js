@@ -54,7 +54,13 @@ export const questionnaireSteps = [
     id: 'avecQui',
     label: 'Avec qui',
     question: 'Avec qui partez-vous ?',
-    help: 'Pour proposer des activités adaptées.'
+    help: 'Pour proposer des activités adaptées.',
+    options: [
+      { value: 'seul', label: 'Seul·e,', meta: 'Activités sûres\nen solo' },
+      { value: 'couple', label: 'En couple,', meta: 'Escapade\nà deux' },
+      { value: 'amis', label: 'Entre amis,', meta: 'Activités\npartagées' },
+      { value: 'famille', label: 'En famille', meta: 'Adaptées\naux enfants' }
+    ]
   },
   {
     id: 'envies',

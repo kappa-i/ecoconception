@@ -54,6 +54,9 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 **5. Budget**
 - *Petit* (moins de 100 CHF), *Moyen* (100 à 300 CHF), *Confort* (plus de 300 CHF), par personne, transport compris.
 
+**6. Avec qui**
+- *Seul·e*, *En couple*, *Entre amis*, *En famille*, pour proposer des activités adaptées.
+
 ### 🌱 Choix d'écoconception
 
 | Choix | Effet |

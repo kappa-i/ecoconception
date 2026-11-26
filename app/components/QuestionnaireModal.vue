@@ -73,6 +73,9 @@ function isStepAnswered (stepId) {
   if (stepId === 'budget') {
     return answers.budget !== ''
   }
+  if (stepId === 'avecQui') {
+    return answers.avecQui !== ''
+  }
   return true
 }
 
@@ -120,6 +123,7 @@ function showResults () {
   }
 
   query.budget = answers.budget
+  query.avecQui = answers.avecQui
 
   navigateTo({ path: '/resultats', query })
 }
@@ -231,6 +235,12 @@ function closeQuestionnaire () {
           v-else-if="currentStepId === 'budget'"
           v-model="answers.budget"
           name="budget"
+          :options="currentStep.options"
+        />
+        <QuestionnaireChoices
+          v-else-if="currentStepId === 'avecQui'"
+          v-model="answers.avecQui"
+          name="avecQui"
           :options="currentStep.options"
         />
         <p v-else class="questionnaire__help">Étape en construction.</p>
