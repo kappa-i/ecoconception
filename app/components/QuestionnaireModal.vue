@@ -76,6 +76,7 @@ function isStepAnswered (stepId) {
   if (stepId === 'avecQui') {
     return answers.avecQui !== ''
   }
+  // Les envies (étape 7) sont facultatives : on peut toujours valider.
   return true
 }
 
@@ -124,6 +125,11 @@ function showResults () {
 
   query.budget = answers.budget
   query.avecQui = answers.avecQui
+
+  // Envies : « nature,culture » (facultatif).
+  if (answers.envies.length > 0) {
+    query.envies = answers.envies.join(',')
+  }
 
   navigateTo({ path: '/resultats', query })
 }
@@ -243,7 +249,13 @@ function closeQuestionnaire () {
           name="avecQui"
           :options="currentStep.options"
         />
-        <p v-else class="questionnaire__help">Étape en construction.</p>
+        <QuestionnaireChoices
+          v-else-if="currentStepId === 'envies'"
+          v-model="answers.envies"
+          name="envies"
+          :options="currentStep.options"
+          multiple
+        />
       </div>
 
       <div class="questionnaire__footer">
@@ -256,7 +268,8 @@ function closeQuestionnaire () {
           Retour
         </button>
         <button type="submit" class="button button--primary t-label-button" :disabled="!canGoNext">
-          Suivant
+          <template v-if="isLastStep">Voir les activités</template>
+          <template v-else>Suivant</template>
         </button>
       </div>
     </form>

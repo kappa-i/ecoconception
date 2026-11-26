@@ -66,6 +66,16 @@ export const questionnaireSteps = [
     id: 'envies',
     label: 'Envies',
     question: 'Qu’avez-vous envie de faire ?',
-    help: 'Facultatif · plusieurs choix possibles.'
+    help: 'Facultatif · plusieurs choix possibles.',
+    // Mêmes valeurs que les liens « Par envie » de l'accueil (app/data/home.js),
+    // pour que ?envie=nature coche directement la bonne réponse.
+    options: [
+      { value: 'nature', label: 'Nature,', meta: 'Randos, lacs\npanoramas' },
+      { value: 'sport', label: 'Sport,', meta: 'Vélo, ski\nescalade' },
+      { value: 'culture', label: 'Culture,', meta: 'Musées\nvillages' },
+      { value: 'gastronomie', label: 'Gastronomie,', meta: 'Fromages\nvignobles' },
+      { value: 'bien-etre', label: 'Bien-être,', meta: 'Bains\nthermaux' },
+      { value: 'evenements', label: 'Événements', meta: 'Festivals\nfêtes' }
+    ]
   }
 ]

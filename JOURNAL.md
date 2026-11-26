@@ -57,6 +57,12 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 **6. Avec qui**
 - *Seul·e*, *En couple*, *Entre amis*, *En famille*, pour proposer des activités adaptées.
 
+**7. Envies**
+- *Nature*, *Sport*, *Culture*, *Gastronomie*, *Bien-être*, *Événements* : **plusieurs choix possibles** (cases à cocher), et l'étape est **facultative**.
+- Si on vient d'un lien *Par envie* de l'accueil, l'envie est déjà cochée (mêmes valeurs que dans `home.js`).
+- Le bouton devient **Voir les activités** et envoie toutes les réponses à la page résultats, en une seule fois, dans l'adresse :
+  `/resultats?depart=Lausanne&cantons=GR,BE&duree=1-3-nuits&hebergement=oui&budget=moyen&avecQui=couple&envies=nature,culture`
+
 ### 🌱 Choix d'écoconception
 
 | Choix | Effet |
@@ -82,8 +88,15 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 
 - **Affiche en `<img>` et pas en `<NuxtImg>`** : le pop-up n'existe que dans le navigateur, donc Nuxt Image ne voyait pas l'image pendant `nuxt generate` (elle aurait été en 404). Le WebP a été converti une fois avec `sharp` et rangé dans `public/images/`.
 - **Compteur des étapes 6 et 7** : la maquette affiche « Durée du séjour » (copier-coller). Le code affiche *Avec qui* et *Envies*.
+- **« Voir les 12 activités »** dans la maquette : le code affiche *Voir les activités*, car il n'y a pas encore de vraies données pour compter les résultats.
+- **Mobile** : le pop-up passe en plein écran, sans l'affiche, et les réponses passent de 56 à 40 px.
 - **Sans JavaScript**, le pop-up ne peut pas s'ouvrir.
-- `/resultats` n'existe pas encore (ajouté à `nitro.prerender.ignore`).
+- `/resultats` n'existe pas encore (ajouté à `nitro.prerender.ignore`) : *Voir les activités* mène pour l'instant à une 404.
+
+### À faire ensuite
+
+- [ ] Page résultats, qui lit les réponses dans l'adresse (et n'affiche *Où dormir* que si `hebergement=oui`)
+- [ ] Tester le questionnaire avec un lecteur d'écran (NVDA ou VoiceOver)
 
 ## 26.11.2026 — Page d'accueil
 
@@ -144,7 +157,7 @@ Les sections alternent les fonds (blanc, `bg/muted`, blanc, ink), comme dans DES
 
 ### À faire ensuite
 
-- [ ] Questionnaire (pop-up, 7 étapes), qui lit `depart`, `etape` et `envie` dans l'URL
+- [x] Questionnaire (pop-up, 7 étapes), qui lit `depart`, `etape` et `envie` dans l'URL *(voir l'entrée « Questionnaire »)*
 - [ ] Pages résultats et activité
 - [ ] Vraies données (activités, cantons, agenda)
 - [ ] Mesurer la page (EcoIndex, poids, requêtes) pour le compteur du pied de page
