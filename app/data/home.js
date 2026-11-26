@@ -1,7 +1,7 @@
 // Contenu de la page d'accueil.
 // ⚠️ Données fictives reprises des maquettes : à remplacer par les vraies données.
-// Photos retirées pour l'instant (fichiers gardés dans public/images/) :
-// pour les remettre, ajouter image: { src, width, height } à chaque activité.
+// Photos : fichiers sources dans public/images/, convertis en WebP par Nuxt Image.
+// Une activité sans `image` affiche un bloc noir.
 
 export const envies = [
   { slug: 'nature', word: 'Nature', count: 142 },
@@ -17,19 +17,22 @@ export const activities = [
     slug: 'balade-weggis',
     title: 'Balade autour de Weggis',
     place: 'Lucerne · Lac des Quatre-Cantons',
-    facts: ['1 h 30 · 5 km', 'Gratuit']
+    facts: ['1 h 30 · 5 km', 'Gratuit'],
+    image: { src: '/images/weggis.jpg', width: 900, height: 1206 }
   },
   {
     slug: 'glacier-morteratsch',
     title: 'Glacier de Morteratsch',
     place: 'Grisons · Engadine',
-    facts: ['2 h · 7 km', 'Gratuit']
+    facts: ['2 h · 7 km', 'Gratuit'],
+    image: { src: '/images/morteratsch.jpg', width: 900, height: 600 }
   },
   {
     slug: 'sentier-eiger',
     title: 'Sentier de l’Eiger',
     place: 'Berne · Oberland bernois',
-    facts: ['2 h 30 · 6 km', 'Dès 64 CHF']
+    facts: ['2 h 30 · 6 km', 'Dès 64 CHF'],
+    image: { src: '/images/eiger-sentier.jpg', width: 900, height: 600 }
   }
 ]
 
