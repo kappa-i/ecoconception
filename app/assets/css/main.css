@@ -1,0 +1,173 @@
+/*
+  Fondations du design system (Figma « Écoconception — Design System »).
+  Polices : aucune webfont chargée. Les familles des maquettes sont en tête
+  de pile (utilisées si installées), sinon on retombe sur les polices système.
+*/
+:root {
+  /* Couleurs */
+  --color-red-swiss: #d62b1f;
+  --color-text-primary: #1c1f23;
+  --color-text-meta: #646a73;
+  --color-text-meta-inverse: #9aa0a9;
+  --color-text-inverse: #ffffff;
+  --color-bg-surface: #ffffff;
+  --color-bg-muted: #efebea;
+  --color-bg-inverse: #1c1f23;
+  --color-border-rule: #e3e6ea;
+  --color-border-rule-inverse: rgba(227, 230, 234, 0.2);
+
+  /* Couleurs contextuelles : redéfinies par .section--inverse */
+  --ctx-meta: var(--color-text-meta);
+  --ctx-rule: var(--color-border-rule);
+  --ctx-link-hover: var(--color-red-swiss);
+
+  /* Espacements */
+  --spacing-2xs: 4px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* Mise en page */
+  --page-gutter: clamp(16px, 4vw, var(--spacing-2xl));
+  --page-max: 1104px;
+
+  /* Typographie */
+  --font-heading: "Venus+ Carrare", "Frutiger", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Frutiger", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --h2-size: clamp(2.5rem, 2rem + 2.5vw, 3.5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, ul, ol {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-red-swiss);
+  outline-offset: 3px;
+}
+
+/* Styles de texte */
+.t-h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--h2-size);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.t-h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.t-body-large {
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+
+.t-body-small {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+}
+
+.t-label-tag {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.t-caption {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.t-label-button {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Section pleine largeur, contenu centré sur 1104 px */
+.section {
+  padding: var(--spacing-3xl) var(--page-gutter);
+}
+
+.section__inner {
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
+.section--muted {
+  background: var(--color-bg-muted);
+}
+
+.section--inverse {
+  --ctx-meta: var(--color-text-meta-inverse);
+  --ctx-rule: var(--color-border-rule-inverse);
+  --ctx-link-hover: var(--color-text-meta-inverse);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
