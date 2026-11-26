@@ -7,54 +7,10 @@
   - <dialog> natif : le navigateur gère le focus, la touche Échap et le fond assombri.
 -->
 <script setup>
+import { questionnaireSteps } from '~/data/questionnaire'
+
 const emit = defineEmits(['close'])
 const route = useRoute()
-
-// Les 7 étapes, dans l'ordre. `label` = texte du compteur, `question` / `help` = en-tête de l'étape.
-const ALL_STEPS = [
-  {
-    id: 'depart',
-    label: 'Lieu de départ',
-    question: 'D’où partez-vous ?',
-    help: 'On calcule les trajets en train depuis ce lieu.'
-  },
-  {
-    id: 'destination',
-    label: 'Destination',
-    question: 'Où aimeriez-vous aller ?',
-    help: 'Un ou plusieurs cantons. Les activités et hébergements proposés seront dans cette région.'
-  },
-  {
-    id: 'duree',
-    label: 'Durée du séjour',
-    question: 'Combien de temps ?',
-    help: 'Une journée suffit souvent : pas besoin d’aller loin.'
-  },
-  {
-    id: 'hebergement',
-    label: 'Hébergement',
-    question: 'Besoin d’un hébergement ?',
-    help: 'Si non, on n’affiche aucune offre d’hôtel : la page reste plus légère.'
-  },
-  {
-    id: 'budget',
-    label: 'Budget',
-    question: 'Quel budget ?',
-    help: 'Par personne, transport compris.'
-  },
-  {
-    id: 'avecQui',
-    label: 'Avec qui',
-    question: 'Avec qui partez-vous ?',
-    help: 'Pour proposer des activités adaptées.'
-  },
-  {
-    id: 'envies',
-    label: 'Envies',
-    question: 'Qu’avez-vous envie de faire ?',
-    help: 'Facultatif · plusieurs choix possibles.'
-  }
-]
 
 // Toutes les réponses de l'utilisateur.
 const answers = reactive({
@@ -70,7 +26,7 @@ const answers = reactive({
 
 // Les étapes réellement posées (l'étape Hébergement sera sautée pour « Une journée »).
 const visibleSteps = computed(() => {
-  return ALL_STEPS
+  return questionnaireSteps
 })
 
 const currentStepId = ref('depart')
@@ -93,6 +49,9 @@ function isStepAnswered (stepId) {
   }
   if (stepId === 'destination') {
     return answers.cantons.length > 0 || answers.surprise
+  }
+  if (stepId === 'duree') {
+    return answers.duree !== ''
   }
   return true
 }
@@ -132,6 +91,8 @@ function showResults () {
     query.cantons = answers.cantons.join(',')
   }
 
+  query.duree = answers.duree
+
   navigateTo({ path: '/resultats', query })
 }
 
@@ -150,6 +111,15 @@ if (route.query.etape) {
     currentStepId.value = requestedStep.id
   }
 }
+
+// --- Accessibilité : à chaque changement d'étape, le focus va sur la nouvelle question,
+// pour que les lecteurs d'écran l'annoncent. ---
+const questionTitle = ref(null)
+
+watch(currentStepId, async () => {
+  await nextTick() // attend que la nouvelle étape soit affichée
+  questionTitle.value.focus()
+})
 
 // --- Ouverture / fermeture du <dialog> ---
 const dialogElement = ref(null)
@@ -203,7 +173,9 @@ function closeQuestionnaire () {
         </div>
 
         <div class="questionnaire__question">
-          <h2 id="question-title" class="t-h3">{{ currentStep.question }}</h2>
+          <h2 id="question-title" ref="questionTitle" class="questionnaire__title t-h3" tabindex="-1">
+            {{ currentStep.question }}
+          </h2>
           <p class="questionnaire__help t-body-small">{{ currentStep.help }}</p>
         </div>
 
@@ -214,6 +186,12 @@ function closeQuestionnaire () {
           v-model:cantons="answers.cantons"
           v-model:surprise="answers.surprise"
           @next="goNext"
+        />
+        <QuestionnaireChoices
+          v-else-if="currentStepId === 'duree'"
+          v-model="answers.duree"
+          name="duree"
+          :options="currentStep.options"
         />
         <p v-else class="questionnaire__help">Étape en construction.</p>
       </div>
@@ -306,6 +284,11 @@ function closeQuestionnaire () {
 
 .questionnaire__help {
   color: var(--color-text-meta);
+}
+
+/* Le titre reçoit le focus par le code (pas au clavier) : pas besoin de contour. */
+.questionnaire__title:focus {
+  outline: none;
 }
 
 /* Button / Style=Back : lien texte gris. */

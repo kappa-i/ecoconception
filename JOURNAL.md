@@ -20,9 +20,11 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 
 | Fichier | Rôle |
 |---|---|
-| `app/components/QuestionnaireModal.vue` | Le pop-up : affiche, progression, question, *Retour* / *Suivant*. Contient le tableau des 7 étapes (textes des questions) et toutes les réponses. |
+| `app/components/QuestionnaireModal.vue` | Le pop-up : affiche, progression, question, *Retour* / *Suivant*. Garde toutes les réponses et choisit l'étape à afficher. |
 | `app/components/QuestionnaireProgress.vue` | Les 7 segments et le compteur « 02 / 07 — Destination ». |
-| `app/components/QuestionnaireStep….vue` | Un composant par étape, qui ne contient que les réponses de l'étape. |
+| `app/components/QuestionnaireStepDepart.vue` · `QuestionnaireStepDestination.vue` | Les réponses des étapes 1 et 2 (champ, carte), qui ont une forme à part. |
+| `app/components/QuestionnaireChoices.vue` · `QuestionnaireAnswer.vue` | La liste de grandes réponses des étapes 3 à 7. |
+| `app/data/questionnaire.js` | Les textes des 7 étapes : questions, aides, réponses. |
 | `app/data/gares.js` | 19 grandes gares avec leurs coordonnées (pour « Utiliser ma position »). |
 
 ### Étapes
@@ -38,6 +40,11 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - *Peu importe, surprenez-moi* : vide la sélection et passe directement à l'étape suivante.
 - La carte est dessinée avec Vue à partir du même fichier `cantons.svg` que l'accueil (lu ligne par ligne). Pas de nouveau fichier à télécharger.
 - *Suivant* reste désactivé tant qu'aucun canton n'est choisi (ou *Peu importe*).
+
+**3. Durée** (avec `QuestionnaireChoices.vue` et `QuestionnaireAnswer.vue`)
+- *Une journée*, *1 à 3 nuits*, *4 nuits et +*, en grande liste typographique (composant Figma *Answer*) : gris par défaut, gris foncé au survol, noir quand choisi. Colonne d'infos à droite.
+- Les étapes 3 à 7 ont toutes cette forme : un seul composant `QuestionnaireChoices` affiche la liste (un seul choix, ou plusieurs pour l'étape 7), au lieu de répéter le même code dans 5 fichiers.
+- Les textes des 7 étapes (questions, aides, réponses) sont rangés dans `app/data/questionnaire.js`, séparés du code.
 
 ### 🌱 Choix d'écoconception
 
@@ -56,6 +63,8 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - La question de chaque étape est un titre `<h2>` qui sert de nom au pop-up pour les lecteurs d'écran.
 - Champ avec un vrai `<label>`. Les messages de « Utiliser ma position » sont annoncés (`aria-live`).
 - Carte : chaque canton est une **case à cocher** pour les lecteurs d'écran (`role="checkbox"`, nom du canton, coché ou non). Au clavier : Tab pour passer d'un canton à l'autre, Espace ou Entrée pour cocher. Le canton qui a le focus est entouré en rouge.
+- Réponses : ce sont de vrais boutons radio (ou cases à cocher), cachés visuellement. Flèches du clavier pour changer de réponse, et la réponse qui a le focus est entourée en rouge.
+- À chaque changement d'étape, le **focus va sur la nouvelle question** : un lecteur d'écran l'annonce tout de suite.
 
 ### ⚠️ Écarts avec la maquette et points ouverts
 
