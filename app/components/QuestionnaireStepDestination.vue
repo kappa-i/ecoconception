@@ -138,9 +138,13 @@ function chooseSurprise () {
   fill: var(--color-text-primary);
 }
 
-/* Focus clavier : contour rouge autour du canton. */
-.canton:focus-visible {
+/* Pas de cadre du navigateur quand on clique sur un canton. */
+.canton:focus {
   outline: none;
+}
+
+/* Au clavier seulement : contour rouge qui suit la forme du canton. */
+.canton:focus-visible {
   stroke: var(--color-red-swiss);
 }
 

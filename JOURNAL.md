@@ -81,7 +81,7 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - `<dialog>` : le focus reste dans le pop-up, Échap le ferme.
 - La question de chaque étape est un titre `<h2>` qui sert de nom au pop-up pour les lecteurs d'écran.
 - Champ avec un vrai `<label>`. Les messages de « Utiliser ma position » sont annoncés (`aria-live`).
-- Carte : chaque canton est une **case à cocher** pour les lecteurs d'écran (`role="checkbox"`, nom du canton, coché ou non). Au clavier : Tab pour passer d'un canton à l'autre, Espace ou Entrée pour cocher. Le canton qui a le focus est entouré en rouge.
+- Carte : chaque canton est une **case à cocher** pour les lecteurs d'écran (`role="checkbox"`, nom du canton, coché ou non). Au clavier : Tab pour passer d'un canton à l'autre, Espace ou Entrée pour cocher. Le canton qui a le focus est entouré en rouge, **au clavier seulement** : au clic, le navigateur n'affiche plus de cadre rectangulaire autour du canton (idem sur la carte de l'accueil).
 - Réponses : ce sont de vrais boutons radio (ou cases à cocher), cachés visuellement. Flèches du clavier pour changer de réponse, et la réponse qui a le focus est entourée en rouge.
 - À chaque changement d'étape, le **focus va sur la nouvelle question** : un lecteur d'écran l'annonce tout de suite.
 

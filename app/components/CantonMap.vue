@@ -76,7 +76,10 @@ function onClick (event) {
   fill: var(--color-text-primary);
 }
 
-.map :deep(.canton:focus-visible) {
+/* Pas de cadre du navigateur autour du canton (clic ou clavier) :
+   au clavier, le canton qui a le focus est déjà rempli en noir. */
+.map :deep(.canton:focus),
+.map :deep(.canton path:focus) {
   outline: none;
 }
 </style>
