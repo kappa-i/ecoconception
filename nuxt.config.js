@@ -1,8 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  modules: ['@nuxt/image'],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  image: {
+    // Photos redimensionnées et converties (format="webp" sur chaque <NuxtImg>)
+    // au moment de `nuxt generate`.
+    quality: 70
+  },
   nitro: {
     prerender: {
       // Pages liées depuis l'accueil mais pas encore créées : à retirer au fur et à mesure.

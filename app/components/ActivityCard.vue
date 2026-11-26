@@ -16,16 +16,22 @@ defineProps({
 
 <template>
   <article class="card">
-    <img
+    <!--
+      Largeur affichée (grille de index.vue) : 1 colonne < 600 px, 2 colonnes < 900 px,
+      puis 352 px (maquette). Nuxt Image : chaque valeur s'applique à partir de son écran.
+    -->
+    <NuxtImg
       v-if="image"
       class="card__image"
       :src="image.src"
       :width="image.width"
       :height="image.height"
+      sizes="390:100vw 600:50vw 900:352px"
+      format="webp"
       alt=""
       loading="lazy"
       decoding="async"
-    >
+    />
     <div v-else class="card__image" aria-hidden="true" />
     <h3 class="card__title t-h4">
       <NuxtLink :to="`/activites/${slug}`" class="card__link">{{ title }}</NuxtLink>

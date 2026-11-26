@@ -1,5 +1,6 @@
 <!--
-  Hero de l'accueil : fond noir (photo retirée pour l'instant), en-tête Double, intro et CTA.
+  Hero de l'accueil : photo duotone (WebP via Nuxt Image, seule image au-dessus de la
+  ligne de flottaison → préchargée), voile ink en CSS, en-tête Double, intro et CTA.
   - cta="inline" (Figma CTA=Inline) : la 1re question du questionnaire dans le hero.
     Formulaire HTML natif (GET, fonctionne sans JS) : « Commencer » ouvre le
     questionnaire directement à l'étape 2 avec le lieu de départ déjà rempli.
@@ -21,6 +22,20 @@ defineProps({
 
 <template>
   <section class="hero">
+    <NuxtImg
+      class="hero__photo"
+      src="/images/hero-eiger.jpg"
+      width="1600"
+      height="1067"
+      sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw"
+      densities="x1"
+      format="webp"
+      alt=""
+      preload
+      fetchpriority="high"
+    />
+    <div class="hero__scrim" aria-hidden="true" />
+
     <SiteHeader :show-cta="false" class="hero__header" />
 
     <div class="hero__content" :class="`hero__content--${cta}`">
@@ -62,8 +77,30 @@ defineProps({
   justify-content: space-between;
   min-height: 720px;
   overflow: hidden;
-  background: #000;
+  background: #506282; /* blue/lake, visible avant le chargement de la photo */
   color: var(--color-text-inverse);
+}
+
+.hero__photo,
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__photo {
+  object-fit: cover;
+}
+
+.hero__scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(28, 31, 35, 0.35) 0%,
+    rgba(28, 31, 35, 0) 22%,
+    rgba(28, 31, 35, 0) 50%,
+    rgba(28, 31, 35, 0.6) 100%
+  );
 }
 
 .hero__header,
