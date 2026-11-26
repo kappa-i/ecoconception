@@ -67,7 +67,7 @@ function closeQuestionnaire () {
           <div class="map-row">
             <div class="map-row__side">
               <p class="map-row__help">
-                Survolez un canton pour voir son nom, cliquez pour découvrir ses activités.
+                Survolez un canton pour voir son nom, cliquez pour y organiser votre séjour.
               </p>
               <div class="canton-info" aria-live="polite">
                 <template v-if="cantonInfo">

@@ -11,7 +11,8 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - **Ouverture** : le pop-up s'ouvre quand l'adresse contient `?questionnaire`. Tous les points d'entrée y mènent :
   - le formulaire du hero : `/?questionnaire&depart=Lausanne&etape=2`, donc on arrive directement à l'étape 2 ;
   - les liens *Par envie* : `/?questionnaire&envie=nature`, l'envie est déjà cochée à l'étape 7 ;
-  - le lien *Organiser mon séjour* de l'en-tête.
+  - le lien *Organiser mon séjour* de l'en-tête ;
+  - un clic sur un canton de la carte *Explorer la Suisse* : `/?questionnaire&canton=VD`. La destination est alors déjà connue, donc **les deux premières questions sont inversées** : d'abord *Où aimeriez-vous aller ?* (le canton est déjà coché, on peut en ajouter), puis *D'où partez-vous ?*.
 - **Fermeture** : *Fermer*, la touche Échap ou le bouton Retour du navigateur.
 - **`<dialog>` natif** : le navigateur gère lui-même le focus, la touche Échap et le fond assombri. Aucune librairie de modale.
 - **Les réponses restent dans le navigateur** pendant tout le questionnaire (un objet `answers` dans `QuestionnaireModal.vue`). **Aucune requête entre les étapes** : une seule à la fin, vers la page résultats, avec toutes les réponses dans l'adresse.

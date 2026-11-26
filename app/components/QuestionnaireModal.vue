@@ -8,6 +8,7 @@
 -->
 <script setup>
 import { questionnaireSteps } from '~/data/questionnaire'
+import { cantons } from '~/data/home'
 
 const emit = defineEmits(['close'])
 const route = useRoute()
@@ -24,13 +25,36 @@ const answers = reactive({
   envies: []
 })
 
+// Questionnaire ouvert depuis la carte de l'accueil (?canton=VD) ?
+// La destination est alors déjà connue : on commence par « Où aimeriez-vous aller ? »
+// (avec le canton déjà coché), puis « D'où partez-vous ? ».
+const canton = String(route.query.canton || '')
+const startsWithDestination = cantons[canton] !== undefined
+
+if (startsWithDestination) {
+  answers.cantons.push(canton)
+}
+
+// L'ordre des questions : normal, ou départ et destination inversés.
+function orderedSteps () {
+  if (!startsWithDestination) {
+    return questionnaireSteps
+  }
+
+  const departStep = questionnaireSteps[0]
+  const destinationStep = questionnaireSteps[1]
+  const otherSteps = questionnaireSteps.slice(2)
+
+  return [destinationStep, departStep, ...otherSteps]
+}
+
 // Les étapes réellement posées.
 // Pour « Une journée », il n'y a pas de nuit, donc pas de question sur l'hébergement :
 // on saute cette étape et le compteur passe de 7 à 6.
 const visibleSteps = computed(() => {
   const steps = []
 
-  for (const step of questionnaireSteps) {
+  for (const step of orderedSteps()) {
     const isHebergementStep = step.id === 'hebergement'
     const isDayTrip = answers.duree === 'journee'
 
@@ -43,7 +67,8 @@ const visibleSteps = computed(() => {
   return steps
 })
 
-const currentStepId = ref('depart')
+// On commence par la première étape de la liste (départ, ou destination si on vient de la carte).
+const currentStepId = ref(visibleSteps.value[0].id)
 
 const currentIndex = computed(() => {
   return visibleSteps.value.findIndex(step => step.id === currentStepId.value)

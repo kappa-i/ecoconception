@@ -3,7 +3,8 @@
   (~42 Ko, ~16 Ko compressé : un seul <path> par canton, nommé par son code).
   Chaque canton est enveloppé dans un lien SVG :
   survol ou focus clavier → le canton passe en noir et son code est émis,
-  clic / Entrée → page de la région.
+  clic / Entrée → ouvre le questionnaire avec ce canton déjà choisi comme destination
+  (/?questionnaire&canton=VD).
 -->
 <script setup>
 import rawSvg from '~/assets/cantons.svg?raw'
@@ -19,7 +20,7 @@ const svg = rawSvg
   .replace('<svg ', `<svg role="group" aria-label="${props.label}" `)
   .replace(/<path id="([A-Z]{2})" (d="[^"]+")\/>/g, (_, code, d) => {
     const name = props.cantons[code]?.name ?? code
-    return `<a href="/regions/${code.toLowerCase()}" class="canton" data-code="${code}" aria-label="${name}"><path ${d}/></a>`
+    return `<a href="/?questionnaire&amp;canton=${code}" class="canton" data-code="${code}" aria-label="${name}"><path ${d}/></a>`
   })
 
 function cantonLink (event) {
