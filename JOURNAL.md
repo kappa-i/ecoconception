@@ -38,6 +38,7 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 **2. Destination** (`QuestionnaireStepDestination.vue`)
 - Carte des 26 cantons : on clique sur un ou plusieurs cantons (survol en gris moyen, choisi en noir). Un deuxième clic enlève le canton.
 - Sous la carte : les cantons choisis (« Grisons, Berne, Lucerne ») ou une aide.
+- **Sur ordinateur**, le nom du canton survolé s'affiche dans une petite étiquette noire qui suit la souris. Elle est masquée sur les écrans tactiles (`@media (hover: none)`), où il n'y a pas de survol.
 - *Peu importe, surprenez-moi* : vide la sélection et passe directement à l'étape suivante.
 - La carte est dessinée avec Vue à partir du même fichier `cantons.svg` que l'accueil (lu ligne par ligne). Pas de nouveau fichier à télécharger.
 - *Suivant* reste désactivé tant qu'aucun canton n'est choisi (ou *Peu importe*).

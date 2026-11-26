@@ -59,33 +59,69 @@ function chooseSurprise () {
   surprise.value = true
   emit('next')
 }
+
+// --- Étiquette avec le nom du canton survolé (ordinateur seulement, voir le CSS) ---
+const mapWrapper = ref(null)
+const hoveredCanton = ref(null)
+const tooltipX = ref(0)
+const tooltipY = ref(0)
+
+function showTooltip (code) {
+  hoveredCanton.value = code
+}
+
+function hideTooltip () {
+  hoveredCanton.value = null
+}
+
+// L'étiquette suit la souris : position calculée par rapport au coin de la carte.
+function moveTooltip (event) {
+  const mapBox = mapWrapper.value.getBoundingClientRect()
+  tooltipX.value = event.clientX - mapBox.left
+  tooltipY.value = event.clientY - mapBox.top
+}
 </script>
 
 <template>
   <div class="destination">
-    <svg
-      class="destination__map"
-      width="720"
-      height="509"
-      viewBox="0 0 720 509"
-      role="group"
-      aria-label="Carte des cantons : choisissez un ou plusieurs cantons"
-    >
-      <path
-        v-for="canton in cantonShapes"
-        :key="canton.code"
-        class="canton"
-        :class="{ 'canton--selected': isSelected(canton.code) }"
-        :d="canton.path"
-        role="checkbox"
-        tabindex="0"
-        :aria-label="cantonName(canton.code)"
-        :aria-checked="isSelected(canton.code) ? 'true' : 'false'"
-        @click="toggleCanton(canton.code)"
-        @keydown.enter.prevent="toggleCanton(canton.code)"
-        @keydown.space.prevent="toggleCanton(canton.code)"
-      />
-    </svg>
+    <div ref="mapWrapper" class="destination__map">
+      <svg
+        class="destination__svg"
+        width="720"
+        height="509"
+        viewBox="0 0 720 509"
+        role="group"
+        aria-label="Carte des cantons : choisissez un ou plusieurs cantons"
+        @mousemove="moveTooltip"
+      >
+        <path
+          v-for="canton in cantonShapes"
+          :key="canton.code"
+          class="canton"
+          :class="{ 'canton--selected': isSelected(canton.code) }"
+          :d="canton.path"
+          role="checkbox"
+          tabindex="0"
+          :aria-label="cantonName(canton.code)"
+          :aria-checked="isSelected(canton.code) ? 'true' : 'false'"
+          @click="toggleCanton(canton.code)"
+          @keydown.enter.prevent="toggleCanton(canton.code)"
+          @keydown.space.prevent="toggleCanton(canton.code)"
+          @mouseenter="showTooltip(canton.code)"
+          @mouseleave="hideTooltip"
+        />
+      </svg>
+
+      <!-- aria-hidden : les lecteurs d'écran ont déjà le nom de chaque canton (aria-label). -->
+      <span
+        v-if="hoveredCanton"
+        class="tooltip t-caption"
+        :style="{ left: tooltipX + 'px', top: tooltipY + 'px' }"
+        aria-hidden="true"
+      >
+        {{ cantonName(hoveredCanton) }}
+      </span>
+    </div>
 
     <div class="destination__selection">
       <p class="destination__chosen t-label-tag" aria-live="polite">
@@ -115,9 +151,32 @@ function chooseSurprise () {
 }
 
 .destination__map {
+  position: relative;
   width: 100%;
   max-width: 460px;
+}
+
+.destination__svg {
+  width: 100%;
   height: auto;
+}
+
+/* Étiquette noire au-dessus de la souris. pointer-events: none : elle ne gêne pas le clic. */
+.tooltip {
+  position: absolute;
+  padding: 4px 8px;
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+}
+
+/* Sur un écran tactile (pas de survol), pas d'étiquette. */
+@media (hover: none) {
+  .tooltip {
+    display: none;
+  }
 }
 
 .canton {
