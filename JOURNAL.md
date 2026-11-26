@@ -2,6 +2,59 @@
 
 > Ce qui a été codé, et pourquoi. Voir aussi [le concept](CONCEPT.md) · [le design](DESIGN.md).
 
+## 26.11.2026 — Questionnaire (pop-up en 7 étapes)
+
+Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* de la page *Écrans* (Figma). Un commit par étape.
+
+### Comment ça marche
+
+- **Ouverture** : le pop-up s'ouvre quand l'adresse contient `?questionnaire`. Tous les points d'entrée y mènent :
+  - le formulaire du hero : `/?questionnaire&depart=Lausanne&etape=2`, donc on arrive directement à l'étape 2 ;
+  - les liens *Par envie* : `/?questionnaire&envie=nature`, l'envie est déjà cochée à l'étape 7 ;
+  - le lien *Organiser mon séjour* de l'en-tête.
+- **Fermeture** : *Fermer*, la touche Échap ou le bouton Retour du navigateur.
+- **`<dialog>` natif** : le navigateur gère lui-même le focus, la touche Échap et le fond assombri. Aucune librairie de modale.
+- **Les réponses restent dans le navigateur** pendant tout le questionnaire (un objet `answers` dans `QuestionnaireModal.vue`). **Aucune requête entre les étapes** : une seule à la fin, vers la page résultats, avec toutes les réponses dans l'adresse.
+
+### Fichiers
+
+| Fichier | Rôle |
+|---|---|
+| `app/components/QuestionnaireModal.vue` | Le pop-up : affiche, progression, question, *Retour* / *Suivant*. Contient le tableau des 7 étapes (textes des questions) et toutes les réponses. |
+| `app/components/QuestionnaireProgress.vue` | Les 7 segments et le compteur « 02 / 07 — Destination ». |
+| `app/components/QuestionnaireStep….vue` | Un composant par étape, qui ne contient que les réponses de l'étape. |
+| `app/data/gares.js` | 19 grandes gares avec leurs coordonnées (pour « Utiliser ma position »). |
+
+### Étapes
+
+**1. Lieu de départ** (`QuestionnaireStepDepart.vue`)
+- Champ *Ville ou gare*, pré-rempli si on vient du hero. Le focus est mis dedans à l'ouverture.
+- *Utiliser ma position* : la position GPS est comparée aux 19 gares de `gares.js`, **directement dans le navigateur**. On n'appelle aucun service de géolocalisation externe (pas de requête, pas de données envoyées à un tiers).
+- *Suivant* reste désactivé tant que le champ est vide. La touche Entrée passe à l'étape suivante.
+
+### 🌱 Choix d'écoconception
+
+| Choix | Effet |
+|---|---|
+| Pop-up sur la page d'accueil | Pas de nouvelle page à charger pour commencer le questionnaire. |
+| Aucune requête entre les étapes | Tout se passe dans le navigateur, une seule requête à la fin. |
+| Affiche en WebP | 69 Ko (JPEG) → **34 Ko**. Chargée seulement à l'ouverture du pop-up, puis gardée pour toutes les étapes. |
+| Pas d'affiche sur mobile | Masquée, et grâce à `loading="lazy"` le navigateur ne la télécharge même pas. |
+| Gare la plus proche calculée localement | Aucun appel à une API de géolocalisation. |
+
+### ♿ Accessibilité
+
+- `<dialog>` : le focus reste dans le pop-up, Échap le ferme.
+- La question de chaque étape est un titre `<h2>` qui sert de nom au pop-up pour les lecteurs d'écran.
+- Champ avec un vrai `<label>`. Les messages de « Utiliser ma position » sont annoncés (`aria-live`).
+
+### ⚠️ Écarts avec la maquette et points ouverts
+
+- **Affiche en `<img>` et pas en `<NuxtImg>`** : le pop-up n'existe que dans le navigateur, donc Nuxt Image ne voyait pas l'image pendant `nuxt generate` (elle aurait été en 404). Le WebP a été converti une fois avec `sharp` et rangé dans `public/images/`.
+- **Compteur des étapes 6 et 7** : la maquette affiche « Durée du séjour » (copier-coller). Le code affiche *Avec qui* et *Envies*.
+- **Sans JavaScript**, le pop-up ne peut pas s'ouvrir.
+- `/resultats` n'existe pas encore (ajouté à `nitro.prerender.ignore`).
+
 ## 26.11.2026 — Page d'accueil
 
 Branche `accueil`. Codée à partir de la maquette Figma *Accueil — complète*.

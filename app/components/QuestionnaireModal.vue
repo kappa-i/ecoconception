@@ -1,0 +1,358 @@
+<!--
+  Questionnaire : le pop-up en 7 étapes (cœur du concept, voir CONCEPT.md).
+  - Affiche à gauche (la même pour toutes les étapes, chargée une seule fois),
+    panneau à droite : progression + Fermer, question, réponses, Retour / Suivant.
+  - Les réponses restent dans le navigateur pendant tout le questionnaire :
+    aucune requête entre les étapes, une seule à la fin (la page résultats).
+  - <dialog> natif : le navigateur gère le focus, la touche Échap et le fond assombri.
+-->
+<script setup>
+const emit = defineEmits(['close'])
+const route = useRoute()
+
+// Les 7 étapes, dans l'ordre. `label` = texte du compteur, `question` / `help` = en-tête de l'étape.
+const ALL_STEPS = [
+  {
+    id: 'depart',
+    label: 'Lieu de départ',
+    question: 'D’où partez-vous ?',
+    help: 'On calcule les trajets en train depuis ce lieu.'
+  },
+  {
+    id: 'destination',
+    label: 'Destination',
+    question: 'Où aimeriez-vous aller ?',
+    help: 'Un ou plusieurs cantons. Les activités et hébergements proposés seront dans cette région.'
+  },
+  {
+    id: 'duree',
+    label: 'Durée du séjour',
+    question: 'Combien de temps ?',
+    help: 'Une journée suffit souvent : pas besoin d’aller loin.'
+  },
+  {
+    id: 'hebergement',
+    label: 'Hébergement',
+    question: 'Besoin d’un hébergement ?',
+    help: 'Si non, on n’affiche aucune offre d’hôtel : la page reste plus légère.'
+  },
+  {
+    id: 'budget',
+    label: 'Budget',
+    question: 'Quel budget ?',
+    help: 'Par personne, transport compris.'
+  },
+  {
+    id: 'avecQui',
+    label: 'Avec qui',
+    question: 'Avec qui partez-vous ?',
+    help: 'Pour proposer des activités adaptées.'
+  },
+  {
+    id: 'envies',
+    label: 'Envies',
+    question: 'Qu’avez-vous envie de faire ?',
+    help: 'Facultatif · plusieurs choix possibles.'
+  }
+]
+
+// Toutes les réponses de l'utilisateur.
+const answers = reactive({
+  depart: '',
+  cantons: [],
+  surprise: false,
+  duree: '',
+  hebergement: '',
+  budget: '',
+  avecQui: '',
+  envies: []
+})
+
+// Les étapes réellement posées (l'étape Hébergement sera sautée pour « Une journée »).
+const visibleSteps = computed(() => {
+  return ALL_STEPS
+})
+
+const currentStepId = ref('depart')
+
+const currentIndex = computed(() => {
+  return visibleSteps.value.findIndex(step => step.id === currentStepId.value)
+})
+
+const currentStep = computed(() => {
+  return visibleSteps.value[currentIndex.value]
+})
+
+const isFirstStep = computed(() => currentIndex.value === 0)
+const isLastStep = computed(() => currentIndex.value === visibleSteps.value.length - 1)
+
+// Une étape est-elle remplie ? Tant qu'elle ne l'est pas, « Suivant » est désactivé.
+function isStepAnswered (stepId) {
+  if (stepId === 'depart') {
+    return answers.depart.trim() !== ''
+  }
+  return true
+}
+
+const canGoNext = computed(() => isStepAnswered(currentStepId.value))
+
+function goBack () {
+  if (isFirstStep.value) {
+    return
+  }
+  const previousStep = visibleSteps.value[currentIndex.value - 1]
+  currentStepId.value = previousStep.id
+}
+
+function goNext () {
+  if (!canGoNext.value) {
+    return
+  }
+  if (isLastStep.value) {
+    showResults()
+    return
+  }
+  const nextStep = visibleSteps.value[currentIndex.value + 1]
+  currentStepId.value = nextStep.id
+}
+
+// Fin du questionnaire : la seule requête, vers la page résultats, avec toutes les réponses dans l'URL.
+function showResults () {
+  const query = {
+    depart: answers.depart.trim()
+  }
+  navigateTo({ path: '/resultats', query })
+}
+
+// --- Pré-remplissage depuis l'URL ---
+// ?depart=Lausanne&etape=2 (formulaire du hero) · ?envie=nature (section « Par envie »)
+if (route.query.depart) {
+  answers.depart = String(route.query.depart)
+}
+if (route.query.envie) {
+  answers.envies.push(String(route.query.envie))
+}
+if (route.query.etape) {
+  const stepNumber = Number(route.query.etape)
+  const requestedStep = visibleSteps.value[stepNumber - 1]
+  if (requestedStep) {
+    currentStepId.value = requestedStep.id
+  }
+}
+
+// --- Ouverture / fermeture du <dialog> ---
+const dialogElement = ref(null)
+
+onMounted(() => {
+  dialogElement.value.showModal()
+})
+
+function closeQuestionnaire () {
+  dialogElement.value.close()
+}
+</script>
+
+<template>
+  <dialog
+    ref="dialogElement"
+    class="questionnaire"
+    aria-labelledby="question-title"
+    @close="emit('close')"
+  >
+    <!--
+      Affiche : décorative, chargée seulement à l'ouverture du pop-up (34 Ko en WebP).
+      Simple <img> et pas <NuxtImg> : le pop-up n'existe que dans le navigateur, donc Nuxt Image
+      ne verrait pas l'image pendant `nuxt generate`. Le WebP a été converti une fois pour toutes.
+      loading="lazy" : sur mobile l'affiche est masquée (display: none), le navigateur ne la télécharge pas.
+    -->
+    <div class="questionnaire__poster" aria-hidden="true">
+      <img
+        class="questionnaire__poster-image"
+        src="/images/affiche-alpinism.webp"
+        width="524"
+        height="746"
+        loading="lazy"
+        alt=""
+      >
+    </div>
+
+    <!-- Un <form> : la touche Entrée passe à l'étape suivante. -->
+    <form class="questionnaire__panel" @submit.prevent="goNext">
+      <div class="questionnaire__main">
+        <div class="questionnaire__top">
+          <QuestionnaireProgress
+            class="questionnaire__progress"
+            :current="currentIndex + 1"
+            :total="visibleSteps.length"
+            :label="currentStep.label"
+          />
+          <button type="button" class="questionnaire__close t-label-button" @click="closeQuestionnaire">
+            Fermer <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+
+        <div class="questionnaire__question">
+          <h2 id="question-title" class="t-h3">{{ currentStep.question }}</h2>
+          <p class="questionnaire__help t-body-small">{{ currentStep.help }}</p>
+        </div>
+
+        <!-- Les réponses de l'étape en cours : un composant par étape. -->
+        <QuestionnaireStepDepart v-if="currentStepId === 'depart'" v-model="answers.depart" />
+        <p v-else class="questionnaire__help">Étape en construction.</p>
+      </div>
+
+      <div class="questionnaire__footer">
+        <button
+          type="button"
+          class="button button--secondary t-label-button"
+          :disabled="isFirstStep"
+          @click="goBack"
+        >
+          Retour
+        </button>
+        <button type="submit" class="button button--primary t-label-button" :disabled="!canGoNext">
+          Suivant
+        </button>
+      </div>
+    </form>
+  </dialog>
+</template>
+
+<style scoped>
+.questionnaire {
+  width: min(1040px, 100% - 2 * var(--spacing-md));
+  height: min(720px, 100% - 2 * var(--spacing-md));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  box-shadow: 0 24px 64px rgba(28, 31, 36, 0.18);
+  color: var(--color-text-primary);
+}
+
+/* display: flex seulement quand le dialog est ouvert (sinon il resterait visible). */
+.questionnaire[open] {
+  display: flex;
+}
+
+.questionnaire::backdrop {
+  background: var(--color-overlay);
+}
+
+/* Affiche : calée en bas, le ciel crème se prolonge en aplat au-dessus. */
+.questionnaire__poster {
+  position: relative;
+  flex: 0 0 380px;
+  background: var(--color-poster-sky);
+}
+
+.questionnaire__poster-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+.questionnaire__panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-xl);
+  min-width: 0;
+  padding: var(--spacing-2xl);
+  overflow-y: auto;
+}
+
+.questionnaire__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.questionnaire__top {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-xl);
+}
+
+.questionnaire__progress {
+  flex: 1;
+}
+
+.questionnaire__question {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.questionnaire__help {
+  color: var(--color-text-meta);
+}
+
+/* Button / Style=Back : lien texte gris. */
+.questionnaire__close {
+  padding: var(--spacing-2xs) 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-meta);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.questionnaire__close:hover {
+  color: var(--color-text-primary);
+}
+
+.questionnaire__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Boutons à angles droits, sans flèche (Button Primary / Secondary). */
+.button {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--color-text-primary);
+  border-radius: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.button--secondary {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
+.button--primary {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.button--primary:hover:not(:disabled) {
+  border-color: var(--color-red-swiss);
+  background: var(--color-red-swiss);
+}
+
+.button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Mobile : plein écran, sans l'affiche (une image en moins à charger). */
+@media (max-width: 800px) {
+  .questionnaire {
+    width: 100%;
+    height: 100%;
+  }
+
+  .questionnaire__poster {
+    display: none;
+  }
+
+  .questionnaire__panel {
+    padding: var(--spacing-lg) var(--page-gutter);
+  }
+}
+</style>

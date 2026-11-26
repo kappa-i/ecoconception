@@ -55,7 +55,7 @@ const languages = [
                 >{{ lang.label }}</a>
               </li>
             </ul>
-            <NuxtLink v-if="showCta" to="/questionnaire" class="header__cta">Organiser mon séjour</NuxtLink>
+            <NuxtLink v-if="showCta" :to="{ path: '/', query: { questionnaire: null } }" class="header__cta">Organiser mon séjour</NuxtLink>
           </div>
         </div>
       </component>

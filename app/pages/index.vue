@@ -4,11 +4,29 @@ import { activities, cantons, envies, events } from '~/data/home'
 
 const activeCanton = ref(null)
 const cantonInfo = computed(() => activeCanton.value && cantons[activeCanton.value])
+
+// Le questionnaire s'ouvre quand l'URL contient ?questionnaire
+// (bouton du hero, liens « Par envie »…). Le bouton Retour du navigateur le referme.
+const route = useRoute()
+
+const isQuestionnaireOpen = computed(() => {
+  return route.query.questionnaire !== undefined
+})
+
+function closeQuestionnaire () {
+  // On enlève les paramètres du questionnaire de l'URL, sans recharger la page.
+  navigateTo({ path: '/', query: {} }, { replace: true })
+}
 </script>
 
 <template>
   <div>
     <HomeHero />
+
+    <!-- ClientOnly : le pop-up n'existe que dans le navigateur (il a besoin de JavaScript). -->
+    <ClientOnly>
+      <QuestionnaireModal v-if="isQuestionnaireOpen" @close="closeQuestionnaire" />
+    </ClientOnly>
 
     <main>
       <!-- Par envie : fond blanc -->
