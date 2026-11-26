@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <NuxtLink :to="{ path: '/questionnaire', query: { envie: slug } }" class="envie">
+  <NuxtLink :to="{ path: '/', query: { questionnaire: null, envie: slug } }" class="envie">
     <span class="envie__word t-h2">{{ word }}</span>
     <span class="envie__count t-body-small">{{ count }} activités</span>
   </NuxtLink>

@@ -2,11 +2,26 @@
   Hero de l'accueil : photo duotone (WebP via Nuxt Image, seule image au-dessus de la
   ligne de flottaison → préchargée), voile ink en CSS, en-tête Double, intro et CTA.
   - cta="inline" (Figma CTA=Inline) : la 1re question du questionnaire dans le hero.
-    Formulaire HTML natif (GET, fonctionne sans JS) : « Commencer » ouvre le
-    questionnaire directement à l'étape 2 avec le lieu de départ déjà rempli.
+    « Commencer » ouvre le questionnaire directement à l'étape 2, avec le lieu de départ
+    déjà rempli (?questionnaire&depart=Lausanne&etape=2).
   - cta="button" (Figma CTA=Button) : bloc blanc « Organiser mon séjour ».
 -->
 <script setup>
+const departInput = ref('')
+
+// Avec JavaScript : on ouvre le pop-up sans recharger la page.
+// Sans JavaScript, le formulaire est envoyé normalement (méthode GET) vers la même adresse.
+function startQuestionnaire () {
+  navigateTo({
+    path: '/',
+    query: {
+      questionnaire: null,
+      depart: departInput.value.trim(),
+      etape: 2
+    }
+  })
+}
+
 defineProps({
   cta: {
     type: String,
@@ -41,7 +56,8 @@ defineProps({
     <div class="hero__content" :class="`hero__content--${cta}`">
       <h1 class="hero__intro t-body-large">{{ intro }}</h1>
 
-      <form v-if="cta === 'inline'" class="start" action="/questionnaire" method="get">
+      <form v-if="cta === 'inline'" class="start" action="/" method="get" @submit.prevent="startQuestionnaire">
+        <input type="hidden" name="questionnaire" value="">
         <input type="hidden" name="etape" value="2">
         <p class="start__kicker t-label-tag">Commencez ici · 5 questions, 1 minute, sans inscription</p>
         <div class="start__row">
@@ -49,6 +65,7 @@ defineProps({
             <label for="hero-depart" class="start__label t-caption">D’où partez-vous ?</label>
             <input
               id="hero-depart"
+              v-model="departInput"
               class="start__input"
               type="text"
               name="depart"
@@ -61,7 +78,7 @@ defineProps({
         </div>
       </form>
 
-      <NuxtLink v-else to="/questionnaire" class="hero__cta">
+      <NuxtLink v-else :to="{ path: '/', query: { questionnaire: null } }" class="hero__cta">
         <span class="t-h4">Organiser mon séjour</span>
         <span class="hero__cta-meta t-caption">5 questions · 1 minute · sans inscription</span>
       </NuxtLink>

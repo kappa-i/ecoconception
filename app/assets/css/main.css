@@ -8,6 +8,7 @@
   --color-red-swiss: #d62b1f;
   --color-text-primary: #1c1f23;
   --color-text-meta: #646a73;
+  --color-text-muted: #858b94; /* réponses non choisies, survol de la carte (3,4:1, grands textes) */
   --color-text-meta-inverse: #9aa0a9;
   --color-text-inverse: #ffffff;
   --color-bg-surface: #ffffff;
@@ -15,6 +16,8 @@
   --color-bg-inverse: #1c1f23;
   --color-border-rule: #e3e6ea;
   --color-border-rule-inverse: rgba(227, 230, 234, 0.2);
+  --color-overlay: rgba(28, 31, 36, 0.55);
+  --color-poster-sky: #fee7b5; /* ciel crème de l'affiche du questionnaire */
 
   /* Couleurs contextuelles : redéfinies par .section--inverse */
   --ctx-meta: var(--color-text-meta);
@@ -92,6 +95,14 @@ a {
   letter-spacing: -0.04em;
 }
 
+.t-h3 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
 .t-h4 {
   font-family: var(--font-heading);
   font-weight: 400;
@@ -155,6 +166,11 @@ a {
   --ctx-link-hover: var(--color-text-meta-inverse);
   background: var(--color-bg-inverse);
   color: var(--color-text-inverse);
+}
+
+/* Pendant que le pop-up du questionnaire est ouvert, la page derrière ne défile pas. */
+body:has(dialog[open]) {
+  overflow: hidden;
 }
 
 .visually-hidden {

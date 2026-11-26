@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     prerender: {
       // Pages liées depuis l'accueil mais pas encore créées : à retirer au fur et à mesure.
       ignore: [
-        '/questionnaire', '/activites', '/regions', '/recherche', '/agenda',
+        '/resultats', '/activites', '/regions', '/recherche', '/agenda',
         '/a-propos', '/accessibilite', '/mentions-legales', '/contact',
         '/de/', '/it/', '/en/'
       ]
