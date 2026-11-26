@@ -51,6 +51,9 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - **Question sautée pour « Une journée »** : pas de nuit, donc pas d'hôtel. Le compteur passe alors de 7 à 6 étapes (`visibleSteps` dans `QuestionnaireModal.vue`).
 - La réponse n'est envoyée aux résultats que si la question a été posée. Sans *Oui*, la page résultats n'affichera aucun hôtel.
 
+**5. Budget**
+- *Petit* (moins de 100 CHF), *Moyen* (100 à 300 CHF), *Confort* (plus de 300 CHF), par personne, transport compris.
+
 ### 🌱 Choix d'écoconception
 
 | Choix | Effet |

@@ -43,7 +43,12 @@ export const questionnaireSteps = [
     id: 'budget',
     label: 'Budget',
     question: 'Quel budget ?',
-    help: 'Par personne, transport compris.'
+    help: 'Par personne, transport compris.',
+    options: [
+      { value: 'petit', label: 'Petit,', meta: 'Moins de\n100 CHF' },
+      { value: 'moyen', label: 'Moyen,', meta: 'De 100 à\n300 CHF' },
+      { value: 'confort', label: 'Confort', meta: 'Plus de\n300 CHF' }
+    ]
   },
   {
     id: 'avecQui',

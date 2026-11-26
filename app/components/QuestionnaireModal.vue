@@ -70,6 +70,9 @@ function isStepAnswered (stepId) {
   if (stepId === 'hebergement') {
     return answers.hebergement !== ''
   }
+  if (stepId === 'budget') {
+    return answers.budget !== ''
+  }
   return true
 }
 
@@ -115,6 +118,8 @@ function showResults () {
   if (answers.duree !== 'journee') {
     query.hebergement = answers.hebergement
   }
+
+  query.budget = answers.budget
 
   navigateTo({ path: '/resultats', query })
 }
@@ -220,6 +225,12 @@ function closeQuestionnaire () {
           v-else-if="currentStepId === 'hebergement'"
           v-model="answers.hebergement"
           name="hebergement"
+          :options="currentStep.options"
+        />
+        <QuestionnaireChoices
+          v-else-if="currentStepId === 'budget'"
+          v-model="answers.budget"
+          name="budget"
           :options="currentStep.options"
         />
         <p v-else class="questionnaire__help">Étape en construction.</p>
