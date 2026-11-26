@@ -8,6 +8,7 @@
   --color-red-swiss: #d62b1f;
   --color-text-primary: #1c1f23;
   --color-text-meta: #646a73;
+  --color-text-muted: #858b94; /* réponses non choisies, survol de la carte (3,4:1, grands textes) */
   --color-text-meta-inverse: #9aa0a9;
   --color-text-inverse: #ffffff;
   --color-bg-surface: #ffffff;

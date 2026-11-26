@@ -91,6 +91,9 @@ function isStepAnswered (stepId) {
   if (stepId === 'depart') {
     return answers.depart.trim() !== ''
   }
+  if (stepId === 'destination') {
+    return answers.cantons.length > 0 || answers.surprise
+  }
   return true
 }
 
@@ -121,6 +124,14 @@ function showResults () {
   const query = {
     depart: answers.depart.trim()
   }
+
+  // Cantons : « GR,BE,LU », ou « surprise » si l'utilisateur a choisi « Peu importe ».
+  if (answers.surprise) {
+    query.cantons = 'surprise'
+  } else {
+    query.cantons = answers.cantons.join(',')
+  }
+
   navigateTo({ path: '/resultats', query })
 }
 
@@ -198,6 +209,12 @@ function closeQuestionnaire () {
 
         <!-- Les réponses de l'étape en cours : un composant par étape. -->
         <QuestionnaireStepDepart v-if="currentStepId === 'depart'" v-model="answers.depart" />
+        <QuestionnaireStepDestination
+          v-else-if="currentStepId === 'destination'"
+          v-model:cantons="answers.cantons"
+          v-model:surprise="answers.surprise"
+          @next="goNext"
+        />
         <p v-else class="questionnaire__help">Étape en construction.</p>
       </div>
 

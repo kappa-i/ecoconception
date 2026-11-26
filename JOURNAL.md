@@ -32,6 +32,13 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - *Utiliser ma position* : la position GPS est comparée aux 19 gares de `gares.js`, **directement dans le navigateur**. On n'appelle aucun service de géolocalisation externe (pas de requête, pas de données envoyées à un tiers).
 - *Suivant* reste désactivé tant que le champ est vide. La touche Entrée passe à l'étape suivante.
 
+**2. Destination** (`QuestionnaireStepDestination.vue`)
+- Carte des 26 cantons : on clique sur un ou plusieurs cantons (survol en gris moyen, choisi en noir). Un deuxième clic enlève le canton.
+- Sous la carte : les cantons choisis (« Grisons, Berne, Lucerne ») ou une aide.
+- *Peu importe, surprenez-moi* : vide la sélection et passe directement à l'étape suivante.
+- La carte est dessinée avec Vue à partir du même fichier `cantons.svg` que l'accueil (lu ligne par ligne). Pas de nouveau fichier à télécharger.
+- *Suivant* reste désactivé tant qu'aucun canton n'est choisi (ou *Peu importe*).
+
 ### 🌱 Choix d'écoconception
 
 | Choix | Effet |
@@ -41,12 +48,14 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 | Affiche en WebP | 69 Ko (JPEG) → **34 Ko**. Chargée seulement à l'ouverture du pop-up, puis gardée pour toutes les étapes. |
 | Pas d'affiche sur mobile | Masquée, et grâce à `loading="lazy"` le navigateur ne la télécharge même pas. |
 | Gare la plus proche calculée localement | Aucun appel à une API de géolocalisation. |
+| Carte SVG réutilisée | La carte de la destination vient du même fichier que celle de l'accueil (≈16 Ko compressé), au lieu d'une carte 3D interactive. |
 
 ### ♿ Accessibilité
 
 - `<dialog>` : le focus reste dans le pop-up, Échap le ferme.
 - La question de chaque étape est un titre `<h2>` qui sert de nom au pop-up pour les lecteurs d'écran.
 - Champ avec un vrai `<label>`. Les messages de « Utiliser ma position » sont annoncés (`aria-live`).
+- Carte : chaque canton est une **case à cocher** pour les lecteurs d'écran (`role="checkbox"`, nom du canton, coché ou non). Au clavier : Tab pour passer d'un canton à l'autre, Espace ou Entrée pour cocher. Le canton qui a le focus est entouré en rouge.
 
 ### ⚠️ Écarts avec la maquette et points ouverts
 
