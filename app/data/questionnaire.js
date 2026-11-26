@@ -33,7 +33,11 @@ export const questionnaireSteps = [
     id: 'hebergement',
     label: 'Hébergement',
     question: 'Besoin d’un hébergement ?',
-    help: 'Si non, on n’affiche aucune offre d’hôtel : la page reste plus légère.'
+    help: 'Si non, on n’affiche aucune offre d’hôtel : la page reste plus légère.',
+    options: [
+      { value: 'oui', label: 'Oui,', meta: 'Proposez-moi des hôtels\nprès des activités' },
+      { value: 'non', label: 'Non', meta: 'J’ai déjà où dormir\n(proches, déjà réservé)' }
+    ]
   },
   {
     id: 'budget',

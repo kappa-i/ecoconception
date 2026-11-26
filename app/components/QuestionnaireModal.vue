@@ -24,9 +24,23 @@ const answers = reactive({
   envies: []
 })
 
-// Les étapes réellement posées (l'étape Hébergement sera sautée pour « Une journée »).
+// Les étapes réellement posées.
+// Pour « Une journée », il n'y a pas de nuit, donc pas de question sur l'hébergement :
+// on saute cette étape et le compteur passe de 7 à 6.
 const visibleSteps = computed(() => {
-  return questionnaireSteps
+  const steps = []
+
+  for (const step of questionnaireSteps) {
+    const isHebergementStep = step.id === 'hebergement'
+    const isDayTrip = answers.duree === 'journee'
+
+    if (isHebergementStep && isDayTrip) {
+      continue
+    }
+    steps.push(step)
+  }
+
+  return steps
 })
 
 const currentStepId = ref('depart')
@@ -52,6 +66,9 @@ function isStepAnswered (stepId) {
   }
   if (stepId === 'duree') {
     return answers.duree !== ''
+  }
+  if (stepId === 'hebergement') {
+    return answers.hebergement !== ''
   }
   return true
 }
@@ -92,6 +109,12 @@ function showResults () {
   }
 
   query.duree = answers.duree
+
+  // Hébergement : seulement si la question a été posée (pas pour « Une journée »).
+  // Sans « oui », la page résultats n'affichera aucun hôtel.
+  if (answers.duree !== 'journee') {
+    query.hebergement = answers.hebergement
+  }
 
   navigateTo({ path: '/resultats', query })
 }
@@ -191,6 +214,12 @@ function closeQuestionnaire () {
           v-else-if="currentStepId === 'duree'"
           v-model="answers.duree"
           name="duree"
+          :options="currentStep.options"
+        />
+        <QuestionnaireChoices
+          v-else-if="currentStepId === 'hebergement'"
+          v-model="answers.hebergement"
+          name="hebergement"
           :options="currentStep.options"
         />
         <p v-else class="questionnaire__help">Étape en construction.</p>

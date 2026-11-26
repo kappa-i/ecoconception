@@ -46,6 +46,11 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 - Les étapes 3 à 7 ont toutes cette forme : un seul composant `QuestionnaireChoices` affiche la liste (un seul choix, ou plusieurs pour l'étape 7), au lieu de répéter le même code dans 5 fichiers.
 - Les textes des 7 étapes (questions, aides, réponses) sont rangés dans `app/data/questionnaire.js`, séparés du code.
 
+**4. Hébergement**
+- *Oui* (proposez-moi des hôtels) ou *Non* (j'ai déjà où dormir).
+- **Question sautée pour « Une journée »** : pas de nuit, donc pas d'hôtel. Le compteur passe alors de 7 à 6 étapes (`visibleSteps` dans `QuestionnaireModal.vue`).
+- La réponse n'est envoyée aux résultats que si la question a été posée. Sans *Oui*, la page résultats n'affichera aucun hôtel.
+
 ### 🌱 Choix d'écoconception
 
 | Choix | Effet |
@@ -55,6 +60,7 @@ Branche `questionnaire`. Codé à partir de la rangée *Parcours — 02 à 08* d
 | Affiche en WebP | 69 Ko (JPEG) → **34 Ko**. Chargée seulement à l'ouverture du pop-up, puis gardée pour toutes les étapes. |
 | Pas d'affiche sur mobile | Masquée, et grâce à `loading="lazy"` le navigateur ne la télécharge même pas. |
 | Gare la plus proche calculée localement | Aucun appel à une API de géolocalisation. |
+| Hébergement seulement si utile | Pour une journée, la question n'est pas posée. Avec *Non*, aucune offre d'hôtel ne sera chargée : ni API de réservation, ni widget tiers (parmi les scripts les plus lourds d'un site touristique). |
 | Carte SVG réutilisée | La carte de la destination vient du même fichier que celle de l'accueil (≈16 Ko compressé), au lieu d'une carte 3D interactive. |
 
 ### ♿ Accessibilité
